@@ -15,7 +15,7 @@ Install方法としては、以下の手順で実施しました。<br/>
   <li>credential.jsonを必要に応じて変更する</li>
   <li>Netが起動したら、自動的にオブジェクトが生成されるので待つ</li>
   <li>Entitiとして表示されることを確認する</li>
-</li>
+<ol>
 
 <p/>
-注意事項としては、HomeASSISTANCEにWiFiアダプタがあった方がいいです。
+<b><<ul>注意事項としては、HomeASSISTANCEにWiFiアダプタがあった方がいいです。</b></ul>
