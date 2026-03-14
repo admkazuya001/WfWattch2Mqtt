@@ -17,5 +17,5 @@ Install方法としては、以下の手順で実施しました。<br/>
   <li>Entitiとして表示されることを確認する</li>
 <ol>
 
-<p/>
+<p>
 <b><<ul>注意事項としては、HomeAssistanceにWiFiアダプタがあった方がいいです。</b></ul>
