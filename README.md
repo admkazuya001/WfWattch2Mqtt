@@ -3,3 +3,7 @@
 
 <a href="https://github.com/usausa" targert="blank">うさうさ様</a>の<a href="https://github.com/usausa/devicelib-wfwattch2" targer="blank">devicelib-wfwattch2</a>を利用した
 HomeAssistantのIntegration Pluginになります。
+
+実行イメージはこのような感じになります。
+※ここでは3個のKS-WFWATTCH2からデータを取得しています。
+<img width="1236" height="735" alt="Image" src="https://github.com/user-attachments/assets/b44306af-63a5-4976-aa8a-453e23137b55" />
