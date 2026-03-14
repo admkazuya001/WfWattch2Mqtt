@@ -18,3 +18,4 @@ Install方法としては、以下の手順で実施しました。<br/>
 </ol>
 <p>
 <b><<ul>注意事項としては、HomeAssistanceにWiFiアダプタがあった方がいいです。</b></ul>
+</p>
