@@ -14,8 +14,8 @@ Install方法としては、以下の手順で実施しました。<br/>
   <li>ビルド済みオブジェクトを対象となるHomeAssistanceに置</li>
   <li>credential.jsonを必要に応じて変更する</li>
   <li>Netが起動したら、自動的にオブジェクトが生成されるので待つ</li>
-  <li>Entitiとして表示されることを確認する</li>
+  <li>Entityとして表示されることを確認する</li>
 </ol>
 
-<b><ul>注意事項としては、HomeAssistanceにWiFiアダプタがあった方がいいです。</b></ul>
+<b><ul>注意事項としては、HomeAssistanceに同一LAN上にない場合、HomeAssistanceにWiFiアダプタがあった方がいいです。</b></ul>
 
