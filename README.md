@@ -17,5 +17,6 @@ Install方法としては、以下の手順で実施しました。<br/>
   <li>Entityとして表示されることを確認する</li>
 </ol>
 
-<b><ul>注意事項としては、HomeAssistanceに同一LAN上にない場合、HomeAssistanceにWiFiアダプタがあった方がいいです。</b></ul>
+<b><ul>注意事項としては、KS-WFWATTCH2が見えるネットワークを別途用意する必要があるかも？<br>
+※IoTデバイスって別VLANにしがちじゃないですか？</b></ul>
 
