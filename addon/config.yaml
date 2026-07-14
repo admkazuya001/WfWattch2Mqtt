@@ -1,0 +1,15 @@
+name: WfWattch2Mqtt
+version: "1.0.0"
+slug: wfwattch2mqtt
+ 
+description: RS-WWATTCH2 MQTT Bridge
+ 
+startup: services
+boot: auto
+ 
+arch:
+  - amd64
+ 
+host_network: true
+ 
+init: false
