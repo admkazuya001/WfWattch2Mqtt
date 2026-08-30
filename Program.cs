@@ -1,6 +1,9 @@
 #nullable enable
 
 using DeviceLib.WFWattch2;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Text;
 using InfluxDB.Client;
 using InfluxDB.Client.Api.Domain;
 using InfluxDB.Client.Writes;
@@ -29,9 +32,15 @@ class Program
         using var mqttClient = mqttFactory.CreateMqttClient();
         var mqttOptions = new MqttClientOptionsBuilder().WithTcpServer(creds.Broker, creds.Port).WithCredentials(creds.Username, creds.Password).Build();
 
-        // 直接送信用のHttpClient
-        using var httpClient = new HttpClient();
+        // InfluxDB v2 クライアント
+        using var httpClient = new HttpClient
+        {
+            Timeout = TimeSpan.FromSeconds(10)
+        };
 
+        httpClient.DefaultRequestHeaders.Authorization =
+            new AuthenticationHeaderValue("Token", creds.InfluxToken);
+   
         // キャンセル処理の準備
         using var appCts = new CancellationTokenSource();
         Console.CancelKeyPress += (s, e) => { e.Cancel = true; appCts.Cancel(); };
@@ -54,21 +63,51 @@ class Program
                     {
                         Console.WriteLine($"[{device.Name}] {client.Power:F1}W / {client.Voltage:F1}V");
 
-                        // --- 1. InfluxDB 直接送信 (V1形式) ---
+                        // --- 1. InfluxDB v2 直接送信 ---
                         try
                         {
-                            var lineProtocol = $"power,device={device.Name} watt={client.Power:F1},voltage={client.Voltage:F1}";
-                            var influxUrl = $"{creds.InfluxUrl?.TrimEnd('/')}/write?db={creds.InfluxBucket}&u={creds.Username}&p={creds.Password}";
-                            using var content = new StringContent(lineProtocol);
-                            var response = await httpClient.PostAsync(influxUrl, content);
+                            var lineProtocol =
+                                $"power,device={device.Name} " +
+                                $"watt={client.Power.ToString(System.Globalization.CultureInfo.InvariantCulture)}," +
+                                $"voltage={client.Voltage.ToString(System.Globalization.CultureInfo.InvariantCulture)}";
 
-                            if (!response.IsSuccessStatusCode)
+                            var influxUrl =
+                                $"{creds.InfluxUrl.TrimEnd('/')}/api/v2/write" +
+                                $"?org={Uri.EscapeDataString(creds.InfluxOrg)}" +
+                                $"&bucket={Uri.EscapeDataString(creds.InfluxBucket)}" +
+                                $"&precision=ns";
+
+                            using var content = new StringContent(
+                                lineProtocol,
+                                Encoding.UTF8,
+                                "text/plain");
+
+                            using var response =
+                                await httpClient.PostAsync(influxUrl, content);
+
+                            Console.WriteLine(influxUrl);
+                            Console.WriteLine(lineProtocol);
+                            Console.WriteLine($"Org=[{creds.InfluxOrg}]");
+                            Console.WriteLine($"Bucket=[{creds.InfluxBucket}]");
+                            Console.WriteLine($"Url=[{creds.InfluxUrl}]");
+
+                            if (response.IsSuccessStatusCode)
+                            {
+                                Console.WriteLine("[InfluxDB] Write OK");
+                            }
+                            else
                             {
                                 var errorBody = await response.Content.ReadAsStringAsync();
-                                Console.WriteLine($"[InfluxDB Error] {response.StatusCode}: {errorBody}");
+
+                                Console.WriteLine(
+                                    $"[InfluxDB Error] " +
+                                    $"{(int)response.StatusCode} {response.StatusCode}: {errorBody}");
                             }
                         }
-                        catch (Exception ex) { Console.WriteLine($"[InfluxDB Exception] {ex.Message}"); }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine($"[InfluxDB Exception] {ex}");
+                        }
 
                         // --- 2. MQTT 送信 ---
                         try
@@ -144,13 +183,33 @@ class Program
         [JsonPropertyName("Ip")] public required string Ip { get; init; }
     }
 
-    public class CredentialInfo
+
+
+}
+// Program のpublic class CredentialInfo
+   public class CredentialInfo
     {
-        [JsonPropertyName("Broker")] public required string Broker { get; init; }
-        [JsonPropertyName("Port")] public required int Port { get; init; }
-        [JsonPropertyName("Username")] public required string Username { get; init; }
-        [JsonPropertyName("Password")] public required string Password { get; init; }
-        [JsonPropertyName("InfluxUrl")] public string? InfluxUrl { get; init; }
-        [JsonPropertyName("InfluxBucket")] public string? InfluxBucket { get; init; }
-    }
-} // Program の閉じ
+    [JsonPropertyName("Broker")]
+    public required string Broker { get; init; }
+
+    [JsonPropertyName("Port")]
+    public required int Port { get; init; }
+
+    [JsonPropertyName("Username")]
+    public required string Username { get; init; }
+
+    [JsonPropertyName("Password")]
+    public required string Password { get; init; }
+
+    [JsonPropertyName("InfluxUrl")]
+    public required string InfluxUrl { get; init; }
+
+    [JsonPropertyName("InfluxToken")]
+    public required string InfluxToken { get; init; }
+
+    [JsonPropertyName("InfluxBucket")]
+    public required string InfluxBucket { get; init; }
+
+    [JsonPropertyName("InfluxOrg")]
+    public required string InfluxOrg { get; init; }
+   }
