@@ -57,3 +57,11 @@ This project uses DeviceLib.WFWattch2.
 
 Original project:
 https://github.com/usausa/devicelib-wfwattch2
+
+
+## Support
+
+This is a personal project.
+Bug reports are welcome.
+Feature requests may not be implemented.
+I cannot guarantee support or maintenance.
