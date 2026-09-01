@@ -1,0 +1,26 @@
+# WfWattch2Mqtt
+
+Wattch2から取得したデータを MQTT 経由で受信し、
+InfluxDB v2へ保存するツールです。
+
+## Requirements
+
+- .NET
+- MQTT Broker
+- InfluxDB v2
+
+## Configuration
+
+### credentials.json
+
+```json
+{
+  "broker": "YOUR_MQTT_BROKER",
+  "port": 1883,
+  "username": "username",
+  "password": "password",
+  "influxUrl": "http://YOUR_INFLUXDB_SERVER:8086",
+  "influxToken": "YOUR_INFLUXDB_TOKEN",
+  "influxBucket": "watt",
+  "influxOrg": "YOUR_ORG"
+}
