@@ -6,9 +6,5 @@
   {
     "Name": "UPS02",
     "IpAddress": "192.168.10.2"
-  },
-  {
-    "Name": "NAS01",
-    "IpAddress": "192.168.10.3"
   }
 ]
