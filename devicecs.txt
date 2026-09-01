@@ -1,14 +1,14 @@
 [
   {
     "Name": "UPS01",
-    "IpAddress": "192.168.30.242"
+    "IpAddress": "192.168.10.1"
   },
   {
     "Name": "UPS02",
-    "IpAddress": "192.168.30.198"
+    "IpAddress": "192.168.10.2"
   },
   {
     "Name": "NAS01",
-    "IpAddress": "192.168.30.219"
+    "IpAddress": "192.168.10.3"
   }
 ]
